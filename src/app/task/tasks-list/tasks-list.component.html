@@ -1,0 +1,69 @@
+<div class="flex justify-end m-6">
+  <nav>
+    <button routerLink="add-task">
+      <div
+        class="flex items-center justify-center bg-indigo-950 text-white w-28 h-10 border-2 rounded"
+      >
+        Add Task
+      </div>
+    </button>
+  </nav>
+</div>
+<div class="flex items-start w-full m-6">
+  <ul class="w-[96.5%]">
+    <li
+      *ngFor="let task of tasks"
+      class="flex justify-center items-left w-full"
+    >
+      <div
+        class="flex items-center bg-indigo-950 text-white border-4 rounded-xl p-3 pl-9 m-2 w-full"
+        id="item"
+        [ngClass]="{
+        'border-white': task.priority == 1,
+        'border-amber-100': task.priority == 2,
+        'border-amber-400': task.priority == 3,
+        'border-orange-700': task.priority == 4,
+        'border-red-800' : task.priority == 5,
+      }"
+      >
+        <table class="w-full">
+          <tr>
+            <td class="w-[90%]">
+              <button
+                title="individualDisp"
+                class="w-full text-left"
+                [routerLink]="['/task', task.id]"
+              >
+                <div>
+                  <h3>{{ task.name }}</h3>
+                  <p>
+                    {{ task.dateTime.getDate() }}-{{
+                      task.dateTime.getMonth()
+                    }}-{{ task.dateTime.getUTCFullYear() }}
+                  </p>
+                  <p>
+                    {{ task.dateTime.getHours() }}:{{
+                      task.dateTime.getMinutes()
+                    }}
+                  </p>
+                </div>
+              </button>
+            </td>
+            <td class="w-[10%]">
+              <app-disp-modal modalID="deleteTask">
+                <app-del-task [taskInput]="task"></app-del-task>
+              </app-disp-modal>
+              <button (click)="openDeleteTask()">
+                <div
+                  class="flex items-center justify-center bg-indigo-950 text-white w-28 h-10 border-2 rounded"
+                >
+                  Delete
+                </div>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </li>
+  </ul>
+</div>

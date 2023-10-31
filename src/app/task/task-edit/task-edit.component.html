@@ -1,0 +1,78 @@
+<div class="flex items-center justify-center h-full w-full p-5">
+  <div
+    class="border border-4 border-indigo-950 p-8 bg-indigo-600 rounded-md w-[25%]"
+  >
+    <div class="flex text-white text-2xl">
+      <h1>Add New Task</h1>
+      <button (click)="navBack()" class="ml-[45%]">X</button>
+    </div>
+    <form [formGroup]="editingTask">
+      <div class="mb-3">
+        <p
+          *ngIf="improperInput"
+          class="border border-4 border-red-700 p-8 bg-indigo-600 rounded-md w-full text-center text-gray-950"
+        >
+          {{ errorMsg }}
+        </p>
+      </div>
+      <div class="mb-3">
+        <label class="inline-block mb-2">Name</label>
+        <input
+          id="nameInput"
+          formControlName="name"
+          type="text"
+          class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+          placeholder="Enter Task Name"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="inline-block mb-2">Detail</label>
+        <input
+          id="detInput"
+          formControlName="detail"
+          type="email"
+          class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+          placeholder="Enter Task Detail"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="inline-block mb-2">Date</label>
+        <input
+          id="dateInput"
+          formControlName="date"
+          type="text"
+          class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+          placeholder="Enter Task Due Date in [DD-MM-YYYY] Format"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="inline-block mb-2">Time</label>
+        <input
+          id="timeInput"
+          formControlName="time"
+          type="text"
+          placeholder="Enter Due Time in [HH:MM] Format"
+          class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="inline-block mb-2">Priority</label>
+        <input
+          id="priInput"
+          formControlName="priority"
+          type="text"
+          placeholder="Prioritize Your Task Between 1-5"
+          class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+        />
+      </div>
+      <button
+        type="submit"
+        class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition hover:bg-indigo-500"
+        [disabled]="!editingTask.valid"
+        (click)="editTask()"
+      >
+        Edit Task
+      </button>
+    </form>
+  </div>
+</div>

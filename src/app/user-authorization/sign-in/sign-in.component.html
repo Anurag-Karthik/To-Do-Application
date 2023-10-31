@@ -1,0 +1,60 @@
+<form>
+  <div class="mb-3">
+    <p
+      *ngIf="signInErrorColor != ''"
+      [ngStyle]="{ 'background-color': signInErrorColor }"
+      class="border border-4 border-indigo-950 p-8 bg-indigo-600 rounded-md w-full text-center text-white"
+    >
+      {{ signInErrorMsg }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2 text-blue-950">Username</label>
+    <input
+      [(ngModel)]="userName"
+      name="eMail"
+      type="text"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Enter Username"
+    />
+    <p *ngIf="emailInvalid" class="text-red-600 text-sm">
+      {{ errorMsgUN }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2 text-blue-950">Email</label>
+    <input
+      [(ngModel)]="eMail"
+      name="eMail"
+      (keyup)="checkEmail()"
+      type="text"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Enter Email"
+    />
+    <p *ngIf="emailInvalid" class="text-red-600 text-sm">
+      {{ errorMsgEM }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2 text-blue-950">Password</label>
+    <input
+      [(ngModel)]="passWord"
+      name="passWord"
+      (keyup)="checkPassword()"
+      type="password"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Password"
+    />
+    <p *ngIf="passwordInvalid" class="text-red-600 text-sm">
+      {{ errorMsgP }}
+    </p>
+  </div>
+  <button
+    type="submit"
+    class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition hover:bg-indigo-500"
+    [disabled]="formInvalid || inSubmission"
+    (click)="login()"
+  >
+    Submit
+  </button>
+</form>

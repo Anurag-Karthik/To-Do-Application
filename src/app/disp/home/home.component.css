@@ -1,0 +1,18 @@
+@media screen and (min-width: 390px) {
+}
+
+@media screen and (min-width: 1440px) {
+  #container {
+    display: flex;
+  }
+
+  #homeContent {
+    width: 60vw;
+    height: 75vh;
+  }
+
+  #loginContent {
+    width: 40vw;
+    height: 75vh;
+  }
+}

@@ -1,0 +1,41 @@
+<div class="h-full w-full flex justify-center items-center">
+  <div
+    class="border border-4 border-indigo-950 p-8 bg-indigo-600 rounded-md w-full text-center text-white h-full w-[65%] m-8"
+    *ngIf="task"
+    [ngClass]="{
+    'border-white': task!.priority == 1,
+    'border-100': task!.priority == 2,
+    'border-400': task!.priority == 3,
+    'border-700': task!.priority == 4,
+    'border-800' : task!.priority == 5,
+  }"
+  >
+    <h1 heading>{{ task!.name }}</h1>
+    <p>{{ task!.dateTime }}</p>
+    <p>{{ task!.priority }}</p>
+    <h3>{{ task!.detail }}</h3>
+    <div class="flex items-center justify-center">
+      <button [routerLink]="['/edit', task.id]">
+        <div
+          class="flex items-center justify-center bg-indigo-950 text-white w-28 h-10 border-2 rounded m-3"
+        >
+          Edit
+        </div>
+      </button>
+      <button (click)="deleteTask(task)">
+        <div
+          class="flex items-center justify-center bg-indigo-950 text-white w-28 h-10 border-2 rounded"
+        >
+          Delete
+        </div>
+      </button>
+    </div>
+    <button (click)="navTasks()">
+      <div
+        class="flex items-center justify-center bg-white text-indigo-950 w-28 h-10 border-2 rounded"
+      >
+        Back
+      </div>
+    </button>
+  </div>
+</div>

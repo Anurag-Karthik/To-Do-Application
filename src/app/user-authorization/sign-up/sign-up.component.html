@@ -1,0 +1,68 @@
+<form [formGroup]="signUpFormGroup">
+  <div class="mb-3">
+    <p
+      *ngIf="signUpErrorColor != ''"
+      [ngStyle]="{ 'background-color': signUpErrorColor }"
+      class="border border-4 border-indigo-950 p-8 bg-indigo-600 rounded-md w-full text-center text-white"
+    >
+      {{ signUpErrorMsg }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2">Name</label>
+    <input
+      formControlName="name"
+      type="text"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Enter Name"
+    />
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2">Email</label>
+    <input
+      formControlName="eMail"
+      type="email"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Enter Email"
+      (keyup)="checkEmail()"
+    />
+    <p *ngIf="emailInvalid" class="text-red-600 text-sm">
+      {{ errorMsgEM }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2">Password</label>
+    <input
+      formControlName="passWord"
+      type="password"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+      placeholder="Enter Password"
+      (keyup)="checkPassword()"
+      (keyup)="checkRetypePassword()"
+    />
+    <p *ngIf="passwordInvalid" class="text-red-600 text-sm">
+      {{ errorMsgP }}
+    </p>
+  </div>
+  <div class="mb-3">
+    <label class="inline-block mb-2">Confirm Password</label>
+    <input
+      formControlName="confirmPassword"
+      (keyup)="checkRetypePassword()"
+      type="password"
+      placeholder="Retype Password"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+    />
+    <p *ngIf="retypePasswordInvaild" class="text-red-600 text-sm">
+      {{ errorMsgRP }}
+    </p>
+  </div>
+  <button
+    type="submit"
+    class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition hover:bg-indigo-500"
+    [disabled]="formInvalid || inSubmission"
+    (click)="signUpUser()"
+  >
+    Submit
+  </button>
+</form>

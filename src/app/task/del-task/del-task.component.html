@@ -1,0 +1,29 @@
+<div>
+  <h1 class="text-xl m-4">Do You Want to Delete the Task</h1>
+  <div class="flex justify-center items-center">
+    <button
+      (click)="
+        dispModSer.closeModal('deleteTask'); dispModSer.unregister('deleteTask')
+      "
+    >
+      <div
+        class="flex items-center justify-center bg-white text-indigo-950 w-28 h-10 border-2 rounded m-4"
+      >
+        Cancel
+      </div>
+    </button>
+    <button
+      (click)="
+        deleteTask(taskInput);
+        dispModSer.closeModal('deleteTask');
+        dispModSer.unregister('deleteTask')
+      "
+    >
+      <div
+        class="flex items-center justify-center bg-indigo-950 text-white w-28 h-10 border-2 rounded m-4"
+      >
+        Delete
+      </div>
+    </button>
+  </div>
+</div>
