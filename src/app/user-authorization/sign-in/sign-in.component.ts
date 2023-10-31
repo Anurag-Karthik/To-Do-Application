@@ -1,41 +1,45 @@
-import { Component, inject } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
-import { SignUpService } from '../sign-up.service';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, inject } from "@angular/core";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { Router } from "@angular/router";
+import { SignUpService } from "../sign-up.service";
+import { Task } from "src/app/Tasks";
+import { DispLoadingSpinnerService } from "src/app/disp/disp-loading-spinner.service";
 
 @Component({
-  selector: 'app-sign-in',
-  templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css'],
+  selector: "app-sign-in",
+  templateUrl: "./sign-in.component.html",
+  styleUrls: ["./sign-in.component.css"],
 })
 export class SignInComponent {
+  tasks: Task[] = [];
+
   emailInvalid = false;
   passwordInvalid = false;
   formInvalid = false;
 
-  errorMsgEM: string = 'Email is Invalid';
-  errorMsgP: string = '';
-  errorMsgUN: string = '';
-  signInErrorColor: string = '';
-  signInErrorMsg: string = '';
+  errorMsgEM: string = "Email is Invalid";
+  errorMsgP: string = "";
+  errorMsgUN: string = "";
+  signInErrorColor: string = "";
+  signInErrorMsg: string = "";
   inSubmission = false;
 
-  eMail = '';
-  passWord = '';
-  userName = '';
+  eMail = "";
+  passWord = "";
+  userName = "";
 
   router = inject(Router);
 
   constructor(
     private fireAuth: AngularFireAuth,
-    private signUpSer: SignUpService
+    private signUpSer: SignUpService,
+    private loadSer: DispLoadingSpinnerService
   ) {}
 
   checkEmail() {
     if (
-      this.eMail.indexOf('.') == -1 &&
-      this.eMail.indexOf('@') == -1 &&
+      this.eMail.indexOf(".") == -1 &&
+      this.eMail.indexOf("@") == -1 &&
       this.eMail.length < 5
     ) {
       this.emailInvalid = true;
@@ -49,7 +53,7 @@ export class SignInComponent {
 
   checkPassword() {
     if (this.passWord!.length < 8) {
-      this.errorMsgP = 'Password Length Must be Greater than 8';
+      this.errorMsgP = "Password Length Must be Greater than 8";
       this.passwordInvalid = true;
       this.formInvalid = true;
       return;
@@ -58,11 +62,10 @@ export class SignInComponent {
     if (!this.emailInvalid) {
       this.formInvalid = false;
     }
-    console.log(this.formInvalid);
   }
 
   async login() {
-    console.log(this.formInvalid);
+    this.loadSer.showLoadingSpinner();
     this.inSubmission = true;
     try {
       await this.fireAuth.signInWithEmailAndPassword(this.eMail, this.passWord);
@@ -73,15 +76,18 @@ export class SignInComponent {
         throw "UserName Doesn't Exist";
       }
     } catch (e) {
-      this.signInErrorColor = 'red';
+      this.loadSer.hideLoadingSpinner();
+
+      this.signInErrorColor = "red";
       this.signInErrorMsg = e as string;
       this.inSubmission = false;
       return;
     }
-    this.signInErrorColor = 'green';
-    this.signInErrorMsg = 'Sign in Sucessful!';
+    this.signInErrorColor = "green";
+    this.signInErrorMsg = "Sign in Sucessful!";
     this.inSubmission = false;
     this.signUpSer.userName = this.userName;
-    this.router.navigateByUrl('tasks');
+    this.loadSer.hideLoadingSpinner();
+    this.router.navigateByUrl("tasks");
   }
 }

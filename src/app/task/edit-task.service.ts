@@ -1,23 +1,20 @@
 import { Injectable } from "@angular/core";
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from "@angular/fire/compat/firestore";
 import { Task } from "../Tasks";
 import { SignUpService } from "../user-authorization/sign-up.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class AddTaskService {
+export class EditTaskService {
   constructor(private signUpSer: SignUpService) {}
 
-  addTask(
+  editTask(
     name: string,
     detail: string,
     dateAndTime: Date,
     priority: number,
-    taskValidity: boolean
+    taskValidity: boolean,
+    oldTask: Task
   ) {
     name = name.toUpperCase();
     if (taskValidity) {
@@ -28,7 +25,7 @@ export class AddTaskService {
         detail: detail,
         priority: priority!,
       };
-      this.signUpSer.addTask(taskToBeAdded);
+      this.signUpSer.updateTask(oldTask, taskToBeAdded);
     }
   }
 }

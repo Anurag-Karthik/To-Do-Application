@@ -1,19 +1,20 @@
-import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { SignUpService } from '../sign-up.service';
+import { Component, inject } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { SignUpService } from "../sign-up.service";
+import { DispLoadingSpinnerService } from "src/app/disp/disp-loading-spinner.service";
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css'],
+  selector: "app-sign-up",
+  templateUrl: "./sign-up.component.html",
+  styleUrls: ["./sign-up.component.css"],
 })
 export class SignUpComponent {
-  errorMsgP: string = '';
-  errorMsgRP: string = '';
-  errorMsgEM: string = 'Email is Invalid';
-  signUpErrorColor: string = '';
-  signUpErrorMsg: string = '';
+  errorMsgP: string = "";
+  errorMsgRP: string = "";
+  errorMsgEM: string = "Email is Invalid";
+  signUpErrorColor: string = "";
+  signUpErrorMsg: string = "";
 
   formInvalid = true;
   passwordInvalid = false;
@@ -23,23 +24,26 @@ export class SignUpComponent {
 
   router = inject(Router);
 
-  constructor(private signUpService: SignUpService) {}
+  constructor(
+    private signUpService: SignUpService,
+    private dispLoad: DispLoadingSpinnerService
+  ) {}
 
   signUpFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    eMail: new FormControl('', [
+    name: new FormControl("", [Validators.required, Validators.minLength(3)]),
+    eMail: new FormControl("", [
       Validators.required,
       Validators.email,
       Validators.minLength(5),
     ]),
-    passWord: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required]),
+    passWord: new FormControl("", [Validators.required]),
+    confirmPassword: new FormControl("", [Validators.required]),
   });
 
   checkEmail() {
     if (
-      this.signUpFormGroup.value.eMail?.indexOf('.') == -1 &&
-      this.signUpFormGroup.value.eMail?.indexOf('@') == -1 &&
+      this.signUpFormGroup.value.eMail?.indexOf(".") == -1 &&
+      this.signUpFormGroup.value.eMail?.indexOf("@") == -1 &&
       this.signUpFormGroup.value.eMail?.length < 5
     ) {
       this.emailInvalid = true;
@@ -61,7 +65,7 @@ export class SignUpComponent {
       this.signUpFormGroup.value.passWord !=
       this.signUpFormGroup.value.confirmPassword
     ) {
-      this.errorMsgRP = 'Password and Retype Password are Not Matching';
+      this.errorMsgRP = "Password and Retype Password are Not Matching";
       this.retypePasswordInvaild = true;
       this.formInvalid = true;
       return;
@@ -82,13 +86,13 @@ export class SignUpComponent {
     let containsSpecial: boolean = false;
     let containsNumber: boolean = false;
     if (this.signUpFormGroup.value.passWord!.length < 8) {
-      this.errorMsgP = 'Password Length Must be Greater than 8';
+      this.errorMsgP = "Password Length Must be Greater than 8";
       this.passwordInvalid = true;
       this.formInvalid = true;
       return;
     }
-    if (this.signUpFormGroup.value.passWord!.indexOf(' ') != -1) {
-      this.errorMsgP = 'Password Must Not Contain Spaces';
+    if (this.signUpFormGroup.value.passWord!.indexOf(" ") != -1) {
+      this.errorMsgP = "Password Must Not Contain Spaces";
       this.passwordInvalid = true;
       this.formInvalid = true;
       return;
@@ -143,13 +147,13 @@ export class SignUpComponent {
       }
     }
     if (!containsCapital) {
-      this.errorMsgP = 'Password Must Contain a Capital Letter';
+      this.errorMsgP = "Password Must Contain a Capital Letter";
       this.passwordInvalid = true;
       this.formInvalid = true;
       return;
     }
     if (!containsSpecial) {
-      this.errorMsgP = 'Password Must Contain a Special Character';
+      this.errorMsgP = "Password Must Contain a Special Character";
       this.passwordInvalid = true;
       this.formInvalid = true;
       return;
@@ -172,6 +176,7 @@ export class SignUpComponent {
 
   async signUpUser() {
     this.inSubmission = true;
+    this.dispLoad.showLoadingSpinner();
     try {
       await this.signUpService.signUpUser({
         name: this.signUpFormGroup.value.name!,
@@ -179,14 +184,16 @@ export class SignUpComponent {
         passWord: this.signUpFormGroup.value.passWord!,
       });
     } catch (e) {
+      this.dispLoad.hideLoadingSpinner();
       this.signUpErrorMsg = e as string;
-      this.signUpErrorColor = 'red';
+      this.signUpErrorColor = "red";
       this.inSubmission = false;
       return;
     }
-    this.signUpErrorMsg = 'Your Account Has been Created!';
-    this.signUpErrorColor = 'green';
+    this.signUpErrorMsg = "Your Account Has been Created!";
+    this.signUpErrorColor = "green";
     this.inSubmission = false;
-    this.router.navigateByUrl('tasks');
+    this.dispLoad.hideLoadingSpinner();
+    this.router.navigateByUrl("tasks");
   }
 }
